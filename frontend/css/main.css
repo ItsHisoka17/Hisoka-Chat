@@ -1,0 +1,41 @@
+body {
+  background-image: url(https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);
+  background-size: cover;
+}
+
+#button {
+  position: fixed;
+  top: 92%;
+  right: 90%;
+  size: 40px;
+  font-weight: bold;
+  color: aquamarine;
+  width: 10%;
+  height: 9%;
+  text-align: center;
+  background-color: white;
+}
+
+#message {
+  left: 10%;
+  position: fixed;
+  top: 92%;
+  width: 87%;
+  height: 8%;
+  background-color: cyan;
+}
+
+#chat {
+  list-style-type: none;
+}
+
+#chat li {
+  color: white;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: bold;
+  position: absolute;
+  right: 42%;
+}
