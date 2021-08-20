@@ -5,7 +5,7 @@ class User {
   
   /**
    * @param {{username: string, socket: object}} u
-   * @returns {Array<object>}
+   * returns {Array<object>}
    */
   addUser(u) {
     let obj = {};
@@ -16,7 +16,7 @@ class User {
 
   /**
    * @param {{username: string, socket: object}} u
-   * @returns {Array<object>}
+   * returns {Array<object>}
    */
   removeUser(u){
     if (this.users.find(user => Object.keys(user)[0] === u.username)){
