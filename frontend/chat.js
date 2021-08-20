@@ -1,11 +1,15 @@
 let socket = io();
-let users = [];
 
 function handleUserName(){
+let params = new URLSearchParams(window.location.search);
 let name;
+if (params.get('u')){
+  name = params.get('u')
+} else {
 let pName = prompt('Hey There! What would you like your username to be?');
 name = (pName!==null&&pName.length>0)?pName:'Stranger';
-
+window.location.replace(`https://chat.chrollo.xyz?u=${name}`);
+}
 socket.username = name;
 document.title = `Hisoka Chat - ${name}`
 socket.emit('join', {name})
@@ -54,7 +58,6 @@ function onMessage(){
 }
 
 function init(){
-  setTimeout(() => console.log(users), 10000)
   handleUserName();
   onMessage();
 };

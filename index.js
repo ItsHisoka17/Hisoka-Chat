@@ -5,7 +5,7 @@ const io = require('socket.io')(server);
 const { User } = require('./backend/DataHandler');
 const userHandler = new User();
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/frontend/main.html'));
+app.get('/', (req, res) => res.sendFile(__dirname + '/frontend/chat.html'));
 
 app.use('/static', express.static(require('path').join(__dirname, 'frontend')))
 io.on('connection', (socket) => {
