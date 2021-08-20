@@ -3,6 +3,11 @@ body {
   background-size: cover;
 }
 
+input[type="text"] {
+  font-size: 15px;
+  font-weight: bold;
+}
+
 #button {
   position: fixed;
   top: 92%;

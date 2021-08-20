@@ -7,7 +7,7 @@ let pName = prompt('Hey There! What would you like your username to be?');
 name = (pName!==null&&pName.length>0)?pName:'Stranger';
 
 socket.username = name;
-document.write(`<title>${name}</title>`)
+document.title = `Hisoka Chat - ${name}`
 socket.emit('join', {name})
 };
 
@@ -34,18 +34,19 @@ function onMessage(){
       let image_regex = /^.*(https?:\/\/.*\.(png|webp|gif|jpg|jpeg)(\?.+)?)$/gm;
       let test = image_regex.exec(message);
       if (test){
-        div.innerHTML = `<br></br><p style="size: 9px;color: grey;">${user} - ${new Date().toTimeString().split(' ')[0].replace(/00/, '12').slice(0, 5)}</p><img src="${message}" style="width: 25%; height: 20%; border-radius: 5%;"></img>`;
+        div.innerHTML = `<p style="size: 9px;color: grey;">${user} - ${moment().format('hh:mm A')}</p><img src="${message}" style="width: 25%; height: 20%; border-radius: 5%;"></img><br></br>`;
         let li = document.createElement('li');
         li.appendChild(div);
         let chat = document.getElementById('chat');
         chat.appendChild(li);
         return false;
       }
-      div.innerHTML = `<br></br><p style="size: 9px;color: grey;">${user} - ${new Date().toTimeString().split(' ')[0].replace(/00/, '12').slice(0, 5)}</p>\n<p>${message}</p>`;
+      div.innerHTML = `<p style="size: 9px;color: grey;">${user} - ${moment().format('hh:mm A')}</p>\n<p>${message}</p><br></br>`;
       let li = document.createElement('li');
       li.appendChild(div);
       let chat = document.getElementById('chat');
       chat.appendChild(li);
+      window.scrollTo(0, document.body.scrollHeight);
     })
   }
   selfMessage();

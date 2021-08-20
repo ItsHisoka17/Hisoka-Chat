@@ -10,7 +10,8 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/frontend/main.html'));
 app.use('/static', express.static(require('path').join(__dirname, 'frontend')))
 io.on('connection', (socket) => {
   socket.on('join', (data) => {
-  io.sockets.emit('message', {user: 'System', message: `${data.name} Has Joined`});
+    socket.emit('message', {user: 'System', message: `Welcome ${data.name}`});
+  socket.broadcast.emit('message', {user: 'System', message: `${data.name} Has Joined`});
   socket.username = data.name;
   userHandler.addUser({username: data.name, socket});
   })
@@ -22,7 +23,7 @@ io.on('connection', (socket) => {
     userHandler.removeUser({username: socket.username, socket});
   })
 });
-
+app.use((req, res) => {res.status(404); res.redirect('/')})
 server.listen(80);
 
 //Created By ItsHisoka17

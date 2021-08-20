@@ -3,10 +3,18 @@
 <html>
   <head>
     <link rel="stylesheet" href="/static/css/main.css" type="text/css">
+    <link rel="icon" href="/static/public/icon_hisoka_ihcqr.png">
+    <meta property="og:title" content="Hisoka Chat - Talk with the world">
+    <meta property="og:url" content="https://hisoka-chat.hisoka17.repl.co/">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="A simple chat app to talk with random people">
+    <meta property="og:image" content="/static/public/icon_hisoka_ihcqr.png">
+    <title>Hisoka Chat</title>
   </head>
   <body>
     <div class="title">Hisoka Chat</div>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <form id="box">
       <input type="text" required id="message">
       <input type="submit" id="button" value="Send">
