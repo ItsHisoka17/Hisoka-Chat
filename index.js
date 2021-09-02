@@ -5,6 +5,10 @@ const io = require('socket.io')(server);
 const { User } = require('./backend/DataHandler');
 const userHandler = new User();
 
+app.use((req, res, next) => {
+  res.cookie('handshake_adrss', req.headers['x-forwarded-for']);
+  next();
+});
 app.get('/', (req, res) => res.sendFile(__dirname + '/frontend/chat.html'));
 
 app.use('/static', express.static(require('path').join(__dirname, 'frontend')))
