@@ -4,15 +4,25 @@ function handleUserName(){
 let params = new URLSearchParams(window.location.search);
 let name;
 if (params.get('u')){
-  name = params.get('u')
+  name = params.get('u');
+  socket.username = name;
+  document.title = `Hisoka Chat - ${name}`
+  socket.emit('join', {name})
 } else {
+  for (let input of ['message', 'button']){
+    $(`#${input}`).prop('disabled', true);
+  }
+  /*
 let pName = prompt('Hey There! What would you like your username to be?');
-name = (pName!==null&&pName.length>0)?pName:'Stranger';
-window.location.replace(`https://chat.chrollo.xyz?u=${name}`);
+*/
+$('#username').fadeIn(1000);
+$('#username').submit(function(e){
+  e.preventDefault();
+  let pName = $('#u').val();
+  name = (pName!==null&&pName.length>0)?pName:'Stranger';
+  window.location.replace(`https://chat.chrollo.xyz?u=${name}`);
+})
 }
-socket.username = name;
-document.title = `Hisoka Chat - ${name}`
-socket.emit('join', {name})
 };
 
 function onMessage(){
@@ -23,7 +33,7 @@ function onMessage(){
     let { value } = document.getElementById('message');
     let regex = /^.*(n(\s{1,2}|.{1,2})?(\s{1,2}|.{1,2})?i(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?e(\s{1,2}|.{1,2})?r(\s{1,2}|.{1,2})?).*$/ig;
     if (regex.exec(value)){
-      alert('Slurs are banned in this chat room');
+      socket.emit('slur');
       document.getElementById('message').value = '';
       return;
     };
@@ -57,9 +67,14 @@ function onMessage(){
   mainMessage();
 }
 
+function userCount(){
+  socket.on('usercount', (data) => $('.users').html(`${data} User${data>1?'s':''} Online`))
+}
+
 function init(){
   handleUserName();
   onMessage();
+  userCount();
 };
 
 init();
