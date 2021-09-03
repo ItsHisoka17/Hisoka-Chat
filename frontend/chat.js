@@ -31,7 +31,7 @@ function onMessage(){
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     let { value } = document.getElementById('message');
-    let regex = /^.*(n(\s{1,2}|.{1,2})?(\s{1,2}|.{1,2})?i(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?e(\s{1,2}|.{1,2})?r(\s{1,2}|.{1,2})?).*$/ig;
+    let regex = /^.*(n(\s{1,2}|.{1,2})?(\s{1,2}|.{1,2})?i(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?((e(\s{1,2}|.{1,2})?r(\s{1,2}|.{1,2})?)|a)).*$/ig;
     if (regex.exec(value)){
       socket.emit('slur');
       document.getElementById('message').value = '';
