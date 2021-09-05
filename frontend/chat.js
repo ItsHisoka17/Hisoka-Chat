@@ -9,7 +9,7 @@ if (params.get('u')){
   document.title = `Hisoka Chat - ${name}`
   socket.emit('join', {name})
 } else {
-  for (let input of ['message', 'button']){
+  for (let input of ['message', 'button', 'img']){
     $(`#${input}`).prop('disabled', true);
   }
   /*
@@ -37,8 +37,25 @@ function onMessage(){
       document.getElementById('message').value = '';
       return;
     };
+    if (value.length>600){
+      $('.t_m_c').fadeIn(1000);
+      document.getElementById('message').value = '';
+      return;
+    }
     socket.emit('message', {user: socket.username, message: value});
     document.getElementById('message').value = '';
+  })
+  }
+
+  function image(){
+    document.getElementById('img').addEventListener('change', (e) => {
+      let data = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(r) {
+        socket.emit('message', {user: socket.username, message: `<img src="${r.target.result}" style="width: 25%; height: 20%; border-radius: 5%;">`
+    })
+  };
+    reader.readAsDataURL(data);
   })
   }
   function mainMessage(){
@@ -65,7 +82,10 @@ function onMessage(){
   }
   selfMessage();
   mainMessage();
+  image();
 }
+
+
 
 function userCount(){
   socket.on('usercount', (data) => $('.users').html(`${data} User${data>1?'s':''} Online`))
