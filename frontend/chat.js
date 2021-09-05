@@ -33,11 +33,16 @@ function onMessage(){
     let { value } = document.getElementById('message');
     let regex = /^.*(n(\s{1,2}|.{1,2})?(\s{1,2}|.{1,2})?i(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?g(\s{1,2}|.{1,2})?((e(\s{1,2}|.{1,2})?r(\s{1,2}|.{1,2})?)|a)).*$/ig;
     if (regex.exec(value)){
+      $('#t_m_c_content').html('Your ban will expire in 10 minutes');
+      $('#t_m_c_type').html('&#9888; You have been banned for using slurs');
+      $('.t_m_c').fadeIn(1000);
       socket.emit('slur');
       document.getElementById('message').value = '';
       return;
     };
     if (value.length>600){
+      $('#t_m_c_content').html('Message must be under 600 characters');
+      $('#t_m_c_type').html('&#9888; Too many chararacters');
       $('.t_m_c').fadeIn(1000);
       document.getElementById('message').value = '';
       return;
