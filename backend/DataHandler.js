@@ -43,5 +43,15 @@ class User {
     setTimeout(() => this.bannedUsers.splice(this.bannedUsers.indexOf(socket), 1), 600000);
   }
 
+  getUsernames(){
+    let arrUsernames = [];
+    for (let socket of this.users){
+      for (let u in socket){
+        arrUsernames.push(u);
+      }
+    }
+    return arrUsernames;
+  }
+
 }
 module.exports.User = User;

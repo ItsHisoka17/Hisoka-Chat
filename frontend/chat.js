@@ -77,7 +77,7 @@ function onMessage(){
         chat.appendChild(li);
         return false;
       }
-      div.innerHTML = `<p style="size: 9px;color: grey;">${user} - ${moment().format('hh:mm A')}</p>\n<p>${message}</p><br></br>`;
+      div.innerHTML = `<p style="size: 9px;color: grey;">${user} - ${moment().format('hh:mm A')}</p>\n<p>${message}</p><br></br><br></br>`;
       let li = document.createElement('li');
       li.appendChild(div);
       let chat = document.getElementById('chat');
@@ -93,7 +93,8 @@ function onMessage(){
 
 
 function userCount(){
-  socket.on('usercount', (data) => $('.users').html(`${data} User${data>1?'s':''} Online`))
+  socket.on('usercount', (data) => {$('.users').html(`Online User${data.length>1?'s':''}: ${data.length}<br></br>${data.join('<br></br>')}`)
+  })
 }
 
 function init(){

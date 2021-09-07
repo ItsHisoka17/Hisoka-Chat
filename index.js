@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('message', {user: 'System', message: `<p style="color: lime">${data.name} Has Joined</p>`});
   socket.username = data.name;
   userHandler.addUser({username: data.name, socket});
-  io.sockets.emit('usercount', userHandler.users.length);
+  io.sockets.emit('usercount', userHandler.getUsernames());
   })
   socket.on('message', (data) => {
     io.sockets.emit('message', {user: data.user, message: data.message});
@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
     if (!socket.username) return;
     io.sockets.emit('message', {user: 'System', message: `<p style="color: red">${socket.username?socket.username:'Stranger'} Has Disconnected</p>`})
     userHandler.removeUser({username: socket.username, socket});
-    io.sockets.emit('usercount', userHandler.users.length);
+    io.sockets.emit('usercount', userHandler.getUsernames());
   })
 });
 app.use((req, res) => {res.status(404); res.redirect('/')})
