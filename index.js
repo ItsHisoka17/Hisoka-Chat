@@ -29,15 +29,26 @@ io.on('connection', (socket) => {
   socket.on('message', (data) => {
     io.sockets.emit('message', {user: data.user, message: data.message});
   });
-  socket.on('slur', () => {socket.emit('message', {user: 'System', message: '<p style="color: red;">You have been banned for 10 Minutes for using slurs</p>'}); userHandler.ban(socket.handshake.address); socket.disconnect(); console.log(userHandler.bannedUsers)});
+  socket.on('slur', () => {socket.emit('message', {user: 'System', message: '<p style="color: red;">You have been banned for 10 Minutes for using slurs</p>'}); userHandler.ban(socket.handshake.address); 
+  socket.disconnect();
+  let broadCastSM = {};
+  broadCastSM["user"] = 'System';
+  broadCastSM["message"] = `<p style="color: red">${socket.username} Has been banned for using slurs</p>`; 
+  socket.broadcast.emit('message', broadCastSM);
+  console.log(userHandler.bannedUsers)
+  });
   socket.on('disconnect', () => {
     if (!socket.username) return;
-    io.sockets.emit('message', {user: 'System', message: `<p style="color: red">${socket.username?socket.username:'Stranger'} Has Disconnected</p>`})
     userHandler.removeUser({username: socket.username, socket});
     io.sockets.emit('usercount', userHandler.getUsernames());
+    if (!userHandler.checkBan(socket.handshake.address)) return;
+    io.sockets.emit('message', {user: 'System', message: `<p style="color: red">${socket.username?socket.username:'Stranger'} Has Disconnected</p>`});
   })
 });
-app.use((req, res) => {res.status(404); res.redirect('/')})
+app.use((req, res) => {
+  res.status(404);
+  res.send('Error: 404  |  Redirecting...<script>(function(){setTimeout(function(){window.location.replace(`https://chat.chrollo.xyz`)}, 3000)})()</script>')
+  });
 server.listen(80);
 
 //Created By ItsHisoka17

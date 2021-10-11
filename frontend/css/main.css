@@ -45,6 +45,7 @@ input[type="text"] {
 }
 
 .title {
+  font-family: Varela Round;
   font-size: 40px;
   font-weight: bold;
   position: absolute;
