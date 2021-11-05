@@ -54,9 +54,28 @@ function onMessage(){
 
   function image(){
     document.getElementById('img').addEventListener('change', (e) => {
+      if (e.target.files[0].size>700000){
+        $("#t_m_c_content").html('File cannot be larger than 700kb');
+        $('#t_m_c_type').html('File too large');
+        $('.t_m_c').fadeIn(1000);
+        return;
+      }
+      let div = document.createElement('div');
+      div.innerHTML = `<p style="size: 9px;color: grey;"> ${socket.username} - ${moment().format('hh:mm A')}</p>\n<p>Sending...</p><br></br><br></br>`;
+      let li = document.createElement('li');
+      li.appendChild(div); 
+      let id = "";
+      for (let i = 0; i<25; i++){
+        id += "abcdefghijklmnopqrstuvwxyz123457890!@#%^&*()_+".charAt(Math.floor(Math.random() * "abcdefghijklmnopqrstuvwxyz123457890!@#%^&*()_+".length))
+      }
+      li.id = id;
+      let chat = document.getElementById('chat');
+      chat.appendChild(li);
+      window.scrollTo(0, document.body.scrollHeight);
       let data = e.target.files[0];
       const reader = new FileReader();
       reader.onload = function(r) {
+        document.getElementById(id).style.display = "none";
         socket.emit('message', {user: socket.username, message: `<img src="${r.target.result}" style="width: 25%; height: 20%; border-radius: 5%;">`
     })
   };
@@ -77,7 +96,7 @@ function onMessage(){
         chat.appendChild(li);
         return false;
       }
-      div.innerHTML = `<p style="size: 9px;color: grey;">${user} - ${moment().format('hh:mm A')}</p>\n<p>${message}</p><br></br><br></br>`;
+      div.innerHTML = `<p style="size: 9px;color: grey;">${user} - ${moment().format('hh:mm A')}</p>\n<p style="color: burlywood;">${message}</p><br></br><br></br>`;
       let li = document.createElement('li');
       li.appendChild(div);
       let chat = document.getElementById('chat');

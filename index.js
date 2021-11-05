@@ -16,12 +16,12 @@ io.on('connection', (socket) => {
   socket.on('join', (data) => {
     let check = userHandler.checkBan(socket.handshake.address);
     if (!check) {
-      socket.emit('message', {user: 'System', message: '<p style="color: red">You are still banned from this chat room for using slurs</p>'});
+      socket.emit('message', {user: 'System', message: '<p style="color: burlywood">You are still banned from this chat room for using slurs</p>'});
       socket.disconnect();
       return;
     }
-    socket.emit('message', {user: 'System', message: `<p style="color: lime">Welcome ${data.name}</p>`});
-  socket.broadcast.emit('message', {user: 'System', message: `<p style="color: lime">${data.name} Has Joined</p>`});
+    socket.emit('message', {user: 'System', message: `<p style="color: burlywood;">Welcome ${data.name}</p>`});
+  socket.broadcast.emit('message', {user: 'System', message: `<p style="color: burlywood;">${data.name} Has Joined</p>`});
   socket.username = data.name;
   userHandler.addUser({username: data.name, socket});
   io.sockets.emit('usercount', userHandler.getUsernames());
@@ -29,11 +29,11 @@ io.on('connection', (socket) => {
   socket.on('message', (data) => {
     io.sockets.emit('message', {user: data.user, message: data.message});
   });
-  socket.on('slur', () => {socket.emit('message', {user: 'System', message: '<p style="color: red;">You have been banned for 10 Minutes for using slurs</p>'}); userHandler.ban(socket.handshake.address); 
+  socket.on('slur', () => {socket.emit('message', {user: 'System', message: '<p style="color: burlywood;">You have been banned for 10 Minutes for using slurs</p>'}); userHandler.ban(socket.handshake.address); 
   socket.disconnect();
   let broadCastSM = {};
   broadCastSM["user"] = 'System';
-  broadCastSM["message"] = `<p style="color: red">${socket.username} Has been banned for using slurs</p>`; 
+  broadCastSM["message"] = `<p style="color: burlywood">${socket.username} Has been banned for using slurs</p>`; 
   socket.broadcast.emit('message', broadCastSM);
   console.log(userHandler.bannedUsers)
   });
@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
     userHandler.removeUser({username: socket.username, socket});
     io.sockets.emit('usercount', userHandler.getUsernames());
     if (!userHandler.checkBan(socket.handshake.address)) return;
-    io.sockets.emit('message', {user: 'System', message: `<p style="color: red">${socket.username?socket.username:'Stranger'} Has Disconnected</p>`});
+    io.sockets.emit('message', {user: 'System', message: `<p style="color: burlywood">${socket.username?socket.username:'Stranger'} Has Disconnected</p>`});
   })
 });
 app.use((req, res) => {
