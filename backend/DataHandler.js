@@ -9,9 +9,7 @@ class User {
    * @returns {Array<object>}
    */
   addUser(u) {
-    let obj = {};
-    obj[u.username] = u.socket;
-    this.users.push(obj);
+    this.users.push(u);
     return this.users;
   };
 
@@ -20,8 +18,8 @@ class User {
    * @returns {Array<object>}
    */
   removeUser(u){
-    if (this.users.find(user => Object.keys(user)[0] === u.username)){
-      this.users.splice(this.users.indexOf(u), 1);
+    if (this.users.find(user => user===u)){
+      this.users.splice(this.users.indexOf(u), 1)
   }
   return this.users;
  };
@@ -46,9 +44,7 @@ class User {
   getUsernames(){
     let arrUsernames = [];
     for (let socket of this.users){
-      for (let u in socket){
-        arrUsernames.push(u);
-      }
+        arrUsernames.push(socket.username);
     }
     return arrUsernames;
   }

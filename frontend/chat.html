@@ -3,6 +3,8 @@
 <html>
   <head>
     <link rel="icon" href="/static/public/icon_hisoka_ihcqr.png">
+    <meta name="description" content="A simple chat app to talk with random people">
+    <meta name="keywords" content="flemo chat, chat app, chat, chat app, online chat">
     <meta name="theme-color" content="#82caed">
     <meta property="og:title" content="Hisoka Chat - Talk with random people">
     <meta property="og:url" content="https://hisoka-chat.hisoka17.repl.co/">
@@ -13,12 +15,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet"> 
-    <title>Hisoka Chat</title>
+    <title>Flemo Chat</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
-    <div class="title">Hisoka Chat</div>
-    <div class="users"></div>
+    <div class="title">Flemo Chat</div>
+    <div class="users_btn" id="user_btn">View Users</div>
+    <div class="users" style="display: none;"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,6 +43,6 @@
       <p style="font-family: Varela Round;" id="t_m_c_content"></p>
       <button id="t_m_c_gotit" onclick="$(this.parentNode).fadeOut(1000);">Ok</button>
     </div>
-    <script src="/static/chat.js"></script>
+    <script src="/static/chat.min.js"></script>
   </body>
 </html>

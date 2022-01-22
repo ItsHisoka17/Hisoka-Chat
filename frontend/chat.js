@@ -32,7 +32,7 @@ let name;
 if (params.get('u')){
   name = params.get('u');
   socket.username = name;
-  document.title = `Hisoka Chat - ${name}`
+  document.title = `${name} - Flemo Chat`
   socket.emit('join', {name})
 } else {
   for (let input of ['message', 'button', 'img']){
@@ -45,6 +45,10 @@ $('#username').fadeIn(1000);
 $('#username').submit(function(e){
   e.preventDefault();
   let pName = $('#u').val();
+  if (pName.length>11) {
+    alert("Username cannot be longer than 11 characters");
+    return handleUserName();
+  }
   name = (pName!==null&&pName.length>0)?pName:'Stranger';
   window.location.replace(`https://chat.chrollo.xyz?u=${name}`);
 })
@@ -140,6 +144,15 @@ function onMessage(){
 
 
 function userCount(){
+  $("#user_btn").click(function(){
+    if (document.getElementsByClassName('users')[0].style.display==="none"){
+      $(".users").css('display', 'block');
+      $("#user_btn").html("Hide Users");
+    } else {
+      $(".users").css('display', 'none');
+      $("#user_btn").html("View Users");
+    }
+  });
   socket.on('usercount', (data) => {$('.users').html(`Online User${data.length>1?'s':''}: ${data.length}<br></br>${data.join('<br></br>')}`)
   })
 }

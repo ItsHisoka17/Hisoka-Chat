@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
     socket.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">Welcome ${data.name}</p>` });
     socket.broadcast.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">${data.name} Has Joined</p>` });
     socket.username = data.name;
-    userHandler.addUser({ username: data.name, socket });
+    userHandler.addUser(socket);
     io.sockets.emit('usercount', userHandler.getUsernames());
     console.log(userHandler.getUsernames())
   })
@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
   });
   socket.on('disconnect', () => {
     if (!socket.username) return;
-    userHandler.removeUser({ username: socket.username, socket });
+    userHandler.removeUser(socket);
     io.sockets.emit('usercount', userHandler.getUsernames());
     if (!userHandler.checkBan(socket.handshake.address)) return;
     io.sockets.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">${socket.username ? socket.username : 'Stranger'} Has Disconnected</p>` });
