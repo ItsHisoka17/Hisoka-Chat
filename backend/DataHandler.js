@@ -27,17 +27,17 @@ class User {
   * @param {object} socket
   */
  checkBan(socket){
-   if (this.bannedUsers.find(s => s === socket)){
-     return false;
+   if (this.bannedUsers.find(s => s.socket === socket)){
+     return this.bannedUsers.find(s => s.socket === socket).reason;
    } else {
-     return true;
+     return false;
    }
  };
  /**
   * @param {object} socket
   */
-  ban(socket) {
-    this.bannedUsers.push(socket);
+  ban(socket, reason) {
+    this.bannedUsers.push({socket, reason});
     setTimeout(() => this.bannedUsers.splice(this.bannedUsers.indexOf(socket), 1), 600000);
   }
 
@@ -47,6 +47,15 @@ class User {
         arrUsernames.push(socket.username);
     }
     return arrUsernames;
+  }
+
+  getUser(u){
+    let user = this.users.find(socket => socket.username===u);
+    if (user){
+      return user;
+    } else {
+      return false;
+    }
   }
 
 }

@@ -36,6 +36,8 @@
       <p id="u_welcome">Welcome!</p>
       <input placeholder="Input your username" id="u">
       <input type="submit" id="s" value="Join">
+      <p id="admin_login" style="color: burlywood;font-family: Varela Round; border: solid; border-color: burlywood; cursor: pointer;">Admin Login</p>
+      <input id="pw" type="text" style="display:none;" placeholder="Input Password">
     </form>
     <ul id="chat"></ul>
     <div class="t_m_c">
@@ -43,6 +45,6 @@
       <p style="font-family: Varela Round;" id="t_m_c_content"></p>
       <button id="t_m_c_gotit" onclick="$(this.parentNode).fadeOut(1000);">Ok</button>
     </div>
-    <script src="/static/chat.min.js"></script>
+    <script src="/static/chat.js"></script>
   </body>
 </html>

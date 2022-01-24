@@ -17,15 +17,20 @@ io.on('connection', (socket) => {
   socket.on('join', (data) => {
     let rmt_adrss = socket.request.connection.remoteAddress;
     console.log(rmt_adrss);
+    if (data.pass===process.env['pw']){
+      socket.admin = true;
+      socket.emit('admin', true);
+    };
     let check = userHandler.checkBan(rmt_adrss);
-    if (!check) {
-      socket.emit('message', { user: 'System', message: '<p style="color: burlywood; font-family: Varela Round;">You are still banned from this chat room for using slurs</p>' });
+    if (check && !socket.admin) {
+      socket.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">You are still banned from this chat room for ${check}</p>` });
       socket.disconnect();
       return;
     }
     socket.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">Welcome ${data.name}</p>` });
     socket.broadcast.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">${data.name} Has Joined</p>` });
     socket.username = data.name;
+    console.log(socket.admin);
     userHandler.addUser(socket);
     io.sockets.emit('usercount', userHandler.getUsernames());
     console.log(userHandler.getUsernames())
@@ -34,13 +39,19 @@ io.on('connection', (socket) => {
     io.sockets.emit('message', { user: data.user, message: data.message });
   });
   socket.on('slur', () => {
-    socket.emit('message', { user: 'System', message: '<p style="color: burlywood; font-family: Varela Round;">You have been banned for 10 Minutes for using slurs</p>' }); userHandler.ban(socket.handshake.address);
+    socket.emit('message', { user: 'System', message: '<p style="color: burlywood; font-family: Varela Round;">You have been banned for 10 Minutes for using slurs</p>' }); userHandler.ban(socket.request.connection.remoteAddress, "Using Slurs");
     socket.disconnect();
     let broadCastSM = {};
     broadCastSM["user"] = 'System';
     broadCastSM["message"] = `<p style="color: burlywood; font-family: Varela Round;">${socket.username} Has been banned for using slurs</p>`;
     socket.broadcast.emit('message', broadCastSM);
   });
+  socket.on('forceremove', (d) => {
+    let u = userHandler.getUser(d);
+    u.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">You have been disconnected by the Admin</p>`})
+    u.disconnect();
+    userHandler.ban(u.request.connection.remoteAddress, "[Reason not found: Banned by Admin]");
+  })
   socket.on('disconnect', () => {
     if (!socket.username) return;
     userHandler.removeUser(socket);

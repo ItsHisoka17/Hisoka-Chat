@@ -30,10 +30,14 @@ function handleUserName(){
 let params = new URLSearchParams(window.location.search);
 let name;
 if (params.get('u')){
+  let pass;
+  if (params.get('pw')){
+    pass = params.get('pw');
+  };
   name = params.get('u');
   socket.username = name;
   document.title = `${name} - Flemo Chat`
-  socket.emit('join', {name})
+  socket.emit('join', {name, pass})
 } else {
   for (let input of ['message', 'button', 'img']){
     $(`#${input}`).prop('disabled', true);
@@ -42,20 +46,23 @@ if (params.get('u')){
 let pName = prompt('Hey There! What would you like your username to be?');
 */
 $('#username').fadeIn(1000);
+$('#admin_login').click(()=>$('#pw').fadeIn(500));
 $('#username').submit(function(e){
   e.preventDefault();
   let pName = $('#u').val();
+  let pw = $('#pw').val();
   if (pName.length>11) {
     alert("Username cannot be longer than 11 characters");
     return handleUserName();
   }
   name = (pName!==null&&pName.length>0)?pName:'Stranger';
-  window.location.replace(`https://chat.chrollo.xyz?u=${name}`);
+  window.location.replace(`https://chat.chrollo.xyz?u=${name}&pw=${pw}`);
 })
 }
 };
 
 function onMessage(){
+  socket.on('admin', () => {socket.admin = true});
   function selfMessage(){
   let form = document.getElementById('box');
   form.addEventListener('submit', (e) => {
@@ -76,6 +83,16 @@ function onMessage(){
       $('.t_m_c').fadeIn(1000);
       document.getElementById('message').value = '';
       return;
+    }
+    console.log(socket.admin);
+    if (socket.admin){
+      if (value.startsWith('_remove')){
+        let removedUser = value.split(' ').filter((a)=>a!=='_remove').join('');
+        console.log(removedUser);
+        socket.emit('forceremove', removedUser);
+        document.getElementById('message').value = '';
+        return;
+      }
     }
     socket.emit('message', {user: socket.username, message: value});
     document.getElementById('message').value = '';
