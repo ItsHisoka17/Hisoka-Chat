@@ -17,13 +17,15 @@ io.on('connection', (socket) => {
   socket.on('join', (data) => {
     let rmt_adrss = socket.request.connection.remoteAddress;
     console.log(rmt_adrss);
-    if (data.pass===process.env['pw']){
+    if (data.pass && data.pass === process.env['pw']) {
       socket.admin = true;
       socket.emit('admin', true);
-    };
+    } else if (data.pass && data.pass !== process.env['pw']) {
+      socket.emit('admin', false);
+    }
     let check = userHandler.checkBan(rmt_adrss);
     if (check && !socket.admin) {
-      socket.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">You are still banned from this chat room for ${check}</p>` });
+      socket.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">You are banned from this chat room for ${check}</p>` });
       socket.disconnect();
       return;
     }
@@ -48,7 +50,7 @@ io.on('connection', (socket) => {
   });
   socket.on('forceremove', (d) => {
     let u = userHandler.getUser(d);
-    u.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">You have been disconnected by the Admin</p>`})
+    u.emit('message', { user: 'System', message: `<p style="color: burlywood; font-family: Varela Round;">You have been disconnected by the Admin</p>` })
     u.disconnect();
     userHandler.ban(u.request.connection.remoteAddress, "[Reason not found: Banned by Admin]");
   })
@@ -62,7 +64,7 @@ io.on('connection', (socket) => {
 });
 app.use((req, res) => {
   res.status(404);
-  res.send('Error: 404  |  Redirecting...<script>(function(){setTimeout(function(){window.location.replace(`https://chat.chrollo.xyz`)}, 3000)})()</script>')
+  res.send('Error: 404  |  Redirecting...<script>(function(){setTimeout(function(){window.location.replace(`https://Hisoka-Chat.hisoka17.repl.co`)}, 3000)})()</script>')
 });
 server.listen(80);
 
